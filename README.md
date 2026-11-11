@@ -7,8 +7,6 @@ A parameterized **N×N matrix multiplication engine** (C = A × B) in Verilog, i
 
 Both engines have the same interface, so the same testbench drives and checks them side by side.
 
-![Simulation result](docs/result.png)
-
 ## Results at a glance
 
 | | Sequential | Pipelined |
@@ -100,21 +98,6 @@ do run.do
 
 `run.do` creates the library, compiles the design and testbench, adds a grouped waveform and runs to completion. A passing run ends with `ALL 24 TESTS PASSED`.
 
-Batch mode (no GUI):
-
-```
-vsim -c -do run.do
-```
-
-`run_cov.do` runs the same flow with code coverage. It requires a ModelSim/Questa edition that licenses code coverage; on editions that do not, it prints a message and exits (use `run.do`).
-
-### Icarus Verilog
-
-```
-iverilog -g2012 -o sim tb_matmul.v matmul_seq.v matmul_pipe.v
-vvp sim
-```
-
 ### Options
 
 - **Print every test's matrices:** add `+SHOW_ALL` (for example `vvp sim +SHOW_ALL`, or `vsim -voptargs=+acc work.tb_matmul +SHOW_ALL` in ModelSim). Tests 1 to 4 always print their matrices.
@@ -163,33 +146,6 @@ PASS [1: A=1..16, B=16..1]  seq: 81 cycles | pipe: 17 cycles
 ALL 24 TESTS PASSED
 ```
 
-### Waveform
-
-![Waveform](docs/waveform.png)
-
-`A_view`, `B_view`, `C_seq_view` and `C_pipe_view` in the testbench split the flat buses into one signal per element (index = row × N + column) so the matrices are readable in the Wave window.
-
-## Status and limitations
-
-- **Simulated with:** ModelSim Intel FPGA Edition 10.5b (24/24 passing) and Icarus Verilog (4×4 and 8×8).
-- **Not synthesized yet:** area and Fmax comparisons are future work. The multiplier counts above are architectural, not synthesis results.
-- **Code coverage:** not collected (the ModelSim edition used does not license it).
-- **Unsigned arithmetic only.**
-- **Flat input/output buses** are simple for a testbench but get wide at larger N; a memory-style interface would suit larger designs.
-
-## Possible extensions
-
-- Synthesize both versions (for example in Quartus or Yosys) and compare area and Fmax
-- Signed-number support
-- Systolic-array version as a third design point
-- Memory-style (BRAM) interface for A, B and C
-- Functional coverage in the testbench
-
 ## Author
 
-[Your Name]. M.Tech VLSI Design, [Your Institution]
-[LinkedIn / email]
-
-## License
-
-MIT. See `LICENSE`.
+Mithun Nitheesh Rogan R
